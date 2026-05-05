@@ -29,7 +29,7 @@ const uint8_t PATRONES[] = {
     0b11111111,
 };
 
-#define NUM_PATRONES = (sizeof(PATRONES) / (sizeof(PATRONES[0])));
+#define NUM_PATRONES (sizeof(PATRONES) / (sizeof(PATRONES[0])))
 
 void imprimirByteBinario(uint8_t valor){
     printf("0b");
@@ -49,34 +49,43 @@ void mostrarEstadoPuerto(void){
     printf("LEDS: ");
     for(int i = 7; i>=0; i--){
         printf("[%d]%s ",i,(PORTA_SIM.byte >> i) & 1 ? "ON" : "OFF");
-    };
+    }
     printf("\n");
-}
+};
 
 void pinSet(uint8_t pin){
     /* Para prender un led en especidifco sin afectar a los demas*/
     PORTA_SIM.byte |= (1 << pin);
-}
+};
 
 void pinClear(uint8_t pin){
     /* Apagar un led sin afectar a los demas */
     PORTA_SIM.byte &= ~(1 << pin);
-}
+};
 
 void pinToggle(uint8_t pin){
     /* Invertir el led sin afectar a los demas */
     PORTA_SIM.byte ^= (1 << pin);
-}
+};
 
 uint8_t leerPin(uint8_t pin){
     /* Retorna un 1 si el pin esta encendido y 0 sino */
-    return (PORTA_SIM.byte << pin) & 1 ? 1 : 0;
-}
+    return (PORTA_SIM.byte >> pin) & 1;
+};
 
-void setValoresPuerto(void){
+void setValoresPuerto(uint8_t valor){
     /* Setea los 8 valores iniciales del puerto en una sola accion*/
-    PORTA_SIM.byte = ~PORTA_SIM.byte;
-}
+    PORTA_SIM.byte = valor;
+};
+
+void ejecutarSecuencia(void){
+    const uint8_t *puntero = PATRONES;
+    for(int i = 0; i < NUM_PATRONES; i++){
+        setValoresPuerto(*puntero);
+        mostrarEstadoPuerto();
+        puntero++;
+    }
+};
 
 int main(){
     printf("=== Simulador de Registro de Hardware ===\n\n");
@@ -106,9 +115,10 @@ int main(){
     printf("  leerPin(3) = %d  (esperado: 1)\n", leerPin(3));
     printf("  leerPin(0) = %d  (esperado: 0)\n", leerPin(0));
 
-    setValoresPuerto();
-    mostrarEstadoPuerto();
+    printf("\n[ Paso 6 ] Acceso via bit fields de la union:\n");
+    PORTA_SIM.byte = 0x00;
 
+    ejecutarSecuencia();
 
     printf("\n=== FIN ===\n");
     return 0;
