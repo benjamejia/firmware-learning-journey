@@ -1,0 +1,42 @@
+# ====================================================================
+# ARCHIVOS COMPILADOS Y BINARIOS (Nunca se deben subir)
+# ====================================================================
+*.o
+*.obj
+*.d
+*.crf
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.su
+
+# ====================================================================
+# CARPETAS DE SALIDA DEL COMPILADOR (Donde el IDE guarda la basura)
+# ====================================================================
+[Dd]ebug/
+[Rr]elease/
+bin/
+obj/
+
+# ====================================================================
+# CONFIGURACIONES ESPECÍFICAS DE IDEs (STM32CubeIDE, MCUXpresso, Keil)
+# ====================================================================
+# Archivos locales que cambian según la computadora del usuario
+.settings/
+.local/
+*.launch
+*.swd
+*.axf
+*.bak
+*.dep
+*.uvguix.*
+*.uvoptx
+
+# ====================================================================
+# ARCHIVOS DEL SISTEMA OPERATIVO Y LOGS
+# ====================================================================
+.DS_Store
+Thumbs.db
+*.log
